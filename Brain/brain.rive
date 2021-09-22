@@ -1,0 +1,36 @@
+! version = 2.0
+
+! var type_yes_or_no = \sType "Yes" or "No" to continue.
+
+> begin
+
++ request
+* <get met> == undefined => <set met=true>{topic=welcome}{ok}
+- {ok}
+< begin
+
+> topic welcome
++ *
+- Welcome, hello i'm Book reccomendation bot, do you want it?<bot type_yes_or_no>{topic=start}
+< topic
+
+> topic start
++ yes
+- Please enter which kinds of books you want.{topic=reccomend}
+
++ no
+- Bye.{topic=welcome}
+< topic
+
+> topic reccomend
++ *
+-<call>getBooks <star></call>
+^ thank you. to recommend more books say anything.{topic=welcome} 
+< topic
+
+
+
+> object getBooks python
+   from app import getBooks
+   return str(getBooks(args))
+< object
